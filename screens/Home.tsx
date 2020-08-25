@@ -1,3 +1,4 @@
+import Dropbox from "react-native-dropbox-sdk";
 import { Audio } from "expo-av";
 import React, { useState, useRef } from "react";
 import { Text, View, StyleSheet } from "react-native";
@@ -15,30 +16,36 @@ const styles = StyleSheet.create({
   },
 });
 
-const CALM_TRACK = require("../assets/audio/river-master.mp3");
-const ENERGIZE_TRACK = require("../assets/audio/15-min-breath-train.mp3");
-const METAL_TRACK = require("../assets/audio/7-min-reset.mp3");
-const PSYCHEDELIC_TRACK = require("../assets/audio/10-min-nexus.mp3");
+const RIVER_MASTER = "/audio/river-master.mp3";
+const FIFTEEN_MIN_BREATH = "/audio/15-min-breath-train.mp3";
+const SEVEN_MINUTE_RESET = "/audio/7-min-reset.mp3";
+const TEN_MINUTE_NEXUS = "/audio/10-min-nexus.mp3";
 
 const playTrack = async (
   soundObject: Audio.Sound,
-  track: any,
+  track: string,
   playing: boolean,
   setPlaying: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   if (!playing) {
     setPlaying(true);
+
+    const dropboxTrack = await new Dropbox({
+      accessToken:
+        "lZoJuE_3pKwAAAAAAAAAAcoLnHCTjup6YMWiU5W0Fqyjs8v2P7p9JnOli75wdq0n",
+    }).filesGetTemporaryLink({ path: track });
+
     try {
-      await soundObject.loadAsync(track);
+      await soundObject.loadAsync({ uri: dropboxTrack.link });
       await soundObject.playAsync();
-    } catch (error) { }
+    } catch (error) {}
     return;
   }
 
   setPlaying(false);
   try {
     await soundObject.unloadAsync();
-  } catch { }
+  } catch {}
 };
 
 const Home = () => {
@@ -50,18 +57,18 @@ const Home = () => {
   return (
     <View style={styles.container}>
       <View style={{ flex: 1, flexDirection: "row" }}>
-        <MusicButton track={CALM_TRACK} {...musicButtonProps}>
+        <MusicButton track={RIVER_MASTER} {...musicButtonProps}>
           <Text style={styles.buttonText}>River Master</Text>
         </MusicButton>
-        <MusicButton track={ENERGIZE_TRACK} {...musicButtonProps}>
+        <MusicButton track={FIFTEEN_MIN_BREATH} {...musicButtonProps}>
           <Text style={styles.buttonText}>15 Minute Breath Train</Text>
         </MusicButton>
       </View>
       <View style={{ flex: 1, flexDirection: "row" }}>
-        <MusicButton track={METAL_TRACK} {...musicButtonProps}>
-          <Text style={styles.buttonText}>7 Minute Reset</Text>
+        <MusicButton track={SEVEN_MINUTE_RESET} {...musicButtonProps}>
+          <Text style={styles.buttonText}>Metal</Text>
         </MusicButton>
-        <MusicButton track={PSYCHEDELIC_TRACK} {...musicButtonProps}>
+        <MusicButton track={TEN_MINUTE_NEXUS} {...musicButtonProps}>
           <Text style={styles.buttonText}>10 Minute Nexus</Text>
         </MusicButton>
       </View>
