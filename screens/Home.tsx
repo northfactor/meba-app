@@ -1,8 +1,11 @@
-import Dropbox from "react-native-dropbox-sdk";
 import { Audio } from "expo-av";
+import * as FileSystem from "expo-file-system";
 import React, { useState, useRef } from "react";
 import { Text, View, StyleSheet } from "react-native";
+import * as Progress from "react-native-progress";
 import MusicButton from "../components/MusicButton";
+import DeleteButton from "../components/DeleteButton";
+import { isLoading } from "expo-font";
 
 const styles = StyleSheet.create({
   buttonText: {
@@ -16,29 +19,53 @@ const styles = StyleSheet.create({
   },
 });
 
-const RIVER_MASTER = "/audio/river-master.mp3";
-const FIFTEEN_MIN_BREATH = "/audio/15-min-breath-train.mp3";
-const SEVEN_MINUTE_RESET = "/audio/7-min-reset.mp3";
-const TEN_MINUTE_NEXUS = "/audio/10-min-nexus.mp3";
+const METAL = "metal.mp3";
+const RIVER_MASTER = "river-master.mp3";
+const FIFTEEN_MIN_BREATH = "15-min-breath-train.mp3";
+const SEVEN_MINUTE_RESET = "7-min-reset.mp3";
+const TEN_MINUTE_NEXUS = "10-min-nexus.mp3";
 
 const playTrack = async (
   soundObject: Audio.Sound,
   track: string,
   playing: boolean,
-  setPlaying: React.Dispatch<React.SetStateAction<boolean>>
+  setPlaying: React.Dispatch<React.SetStateAction<boolean>>,
+  progressCallback: any
 ) => {
   if (!playing) {
     setPlaying(true);
 
-    const dropboxTrack = await new Dropbox({
-      accessToken:
-        "lZoJuE_3pKwAAAAAAAAAAcoLnHCTjup6YMWiU5W0Fqyjs8v2P7p9JnOli75wdq0n",
-    }).filesGetTemporaryLink({ path: track });
+    const reallocateUrl = "http://reallocate.org/wp-content/uploads/2020/08/";
 
-    try {
-      await soundObject.loadAsync({ uri: dropboxTrack.link });
-      await soundObject.playAsync();
-    } catch (error) {}
+    let dlTrack = null;
+    const fileSystemTrack = FileSystem.documentDirectory + track;
+
+    const existingFile = await FileSystem.getInfoAsync(fileSystemTrack);
+    console.log("existingFile", existingFile);
+
+    if (existingFile.exists) {
+      dlTrack = { uri: existingFile.uri };
+    } else {
+      const downloadResumable = FileSystem.createDownloadResumable(
+        `${reallocateUrl}${track}`,
+        fileSystemTrack,
+        {},
+        progressCallback
+      );
+
+      dlTrack = await downloadResumable.downloadAsync();
+      console.log("Finished downloading to ", dlTrack);
+    }
+
+    console.log(dlTrack);
+
+    if (dlTrack) {
+      try {
+        await soundObject.loadAsync(dlTrack);
+        await soundObject.playAsync();
+      } catch (error) {}
+    }
+
     return;
   }
 
@@ -50,13 +77,39 @@ const playTrack = async (
 
 const Home = () => {
   const [playing, setPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
+
   const soundObject = useRef(new Audio.Sound());
 
-  const musicButtonProps = { soundObject, playing, playTrack, setPlaying };
+  const progressCallback = (downloadProgress: any) => {
+    console.log("downloadProgress", downloadProgress);
+    const progress =
+      downloadProgress.totalBytesWritten /
+      downloadProgress.totalBytesExpectedToWrite;
+    setProgress(progress);
+  };
+
+  const musicButtonProps = {
+    soundObject,
+    playing,
+    playTrack,
+    setPlaying,
+    progressCallback,
+  };
+
+  console.log("Progress", progress);
+
+  const isLoading = (progress: number) => progress != 0 && progress != 1;
+
+  console.log(isLoading(progress));
 
   return (
     <View style={styles.container}>
+      {isLoading(progress) && <Progress.Bar progress={progress} width={null} />}
       <View style={{ flex: 1, flexDirection: "row" }}>
+        <MusicButton track={METAL} {...musicButtonProps}>
+          <Text style={styles.buttonText}>Metal</Text>
+        </MusicButton>
         <MusicButton track={RIVER_MASTER} {...musicButtonProps}>
           <Text style={styles.buttonText}>River Master</Text>
         </MusicButton>
@@ -66,11 +119,12 @@ const Home = () => {
       </View>
       <View style={{ flex: 1, flexDirection: "row" }}>
         <MusicButton track={SEVEN_MINUTE_RESET} {...musicButtonProps}>
-          <Text style={styles.buttonText}>Metal</Text>
+          <Text style={styles.buttonText}>7 Minute Reset</Text>
         </MusicButton>
         <MusicButton track={TEN_MINUTE_NEXUS} {...musicButtonProps}>
           <Text style={styles.buttonText}>10 Minute Nexus</Text>
         </MusicButton>
+        <DeleteButton />
       </View>
     </View>
   );
