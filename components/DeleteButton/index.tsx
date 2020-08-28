@@ -9,6 +9,9 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
 });
 
+/**
+ * Meant to be a debug button to delete all the expo files currently downloaded on the device
+ */
 const DeleteButton = () => (
   <View style={styles.container}>
     <TouchableOpacity
