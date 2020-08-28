@@ -5,6 +5,7 @@ import { Text, View, StyleSheet } from "react-native";
 import * as Progress from "react-native-progress";
 import MusicButton from "../components/MusicButton";
 import DeleteButton from "../components/DeleteButton";
+import { mebaGreen } from "../constants/Colors";
 
 const styles = StyleSheet.create({
   buttonText: {
@@ -52,7 +53,6 @@ const playTrack = async (
       );
 
       dlTrack = await downloadResumable.downloadAsync();
-      console.log("Finished downloading to ", dlTrack);
     }
 
     if (dlTrack) {
@@ -94,11 +94,11 @@ const Home = () => {
 
   const isLoading = (progress: number) => progress != 0 && progress != 1;
 
-  console.log(isLoading(progress));
-
   return (
     <View style={styles.container}>
-      {isLoading(progress) && <Progress.Bar progress={progress} width={null} />}
+      {isLoading(progress) && (
+        <Progress.Bar progress={progress} width={null} color={mebaGreen} />
+      )}
       <View style={{ flex: 1, flexDirection: "row" }}>
         <MusicButton track={RIVER_MASTER} {...musicButtonProps}>
           <Text style={styles.buttonText}>River Master</Text>
@@ -114,6 +114,8 @@ const Home = () => {
         <MusicButton track={TEN_MINUTE_NEXUS} {...musicButtonProps}>
           <Text style={styles.buttonText}>10 Minute Nexus</Text>
         </MusicButton>
+        {/* The DeleteButton below is meant to be use for debugging. 
+        It will delete any local meba files that were previously downloaded to your device. */}
         {/* <DeleteButton /> */}
       </View>
     </View>

@@ -2,6 +2,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Audio } from "expo-av";
 import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { mebaGreen } from "../../constants/Colors";
 
 interface MusicButtonProps {
   children: React.ReactElement;
@@ -30,6 +31,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#DDDDDD",
     flex: 1,
   },
+  playingButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: mebaGreen,
+    flex: 1,
+  },
 });
 
 const MusicButton = (props: MusicButtonProps) => {
@@ -42,10 +49,22 @@ const MusicButton = (props: MusicButtonProps) => {
     setPlaying,
     progressCallback,
   } = props;
+
+  const getButtonStyle = (
+    playing: MusicButtonProps["playing"] | null,
+    track: MusicButtonProps["track"]
+  ) => {
+    if (playing === track) {
+      return styles.playingButton;
+    }
+
+    return styles.button;
+  };
+
   return (
     <View style={styles.buttonView}>
       <TouchableOpacity
-        style={styles.button}
+        style={getButtonStyle(playing, track)}
         onPress={() => {
           playTrack(
             soundObject.current,
@@ -56,14 +75,6 @@ const MusicButton = (props: MusicButtonProps) => {
           );
         }}
       >
-        {playing === track && (
-          <MaterialCommunityIcons
-            name="music-note-outline"
-            size={16}
-            color="black"
-            style={{ position: "absolute", top: 8, right: 8 }}
-          />
-        )}
         {children}
       </TouchableOpacity>
     </View>
