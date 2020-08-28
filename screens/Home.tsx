@@ -5,7 +5,6 @@ import { Text, View, StyleSheet } from "react-native";
 import * as Progress from "react-native-progress";
 import MusicButton from "../components/MusicButton";
 import DeleteButton from "../components/DeleteButton";
-import { isLoading } from "expo-font";
 
 const styles = StyleSheet.create({
   buttonText: {
@@ -28,12 +27,12 @@ const TEN_MINUTE_NEXUS = "10-min-nexus.mp3";
 const playTrack = async (
   soundObject: Audio.Sound,
   track: string,
-  playing: boolean,
-  setPlaying: React.Dispatch<React.SetStateAction<boolean>>,
+  playing: string | null,
+  setPlaying: React.Dispatch<React.SetStateAction<any>>,
   progressCallback: any
 ) => {
   if (!playing) {
-    setPlaying(true);
+    setPlaying(track);
 
     const reallocateUrl = "http://reallocate.org/wp-content/uploads/2020/08/";
 
@@ -41,7 +40,6 @@ const playTrack = async (
     const fileSystemTrack = FileSystem.documentDirectory + track;
 
     const existingFile = await FileSystem.getInfoAsync(fileSystemTrack);
-    console.log("existingFile", existingFile);
 
     if (existingFile.exists) {
       dlTrack = { uri: existingFile.uri };
@@ -57,8 +55,6 @@ const playTrack = async (
       console.log("Finished downloading to ", dlTrack);
     }
 
-    console.log(dlTrack);
-
     if (dlTrack) {
       try {
         await soundObject.loadAsync(dlTrack);
@@ -69,20 +65,19 @@ const playTrack = async (
     return;
   }
 
-  setPlaying(false);
+  setPlaying(null);
   try {
     await soundObject.unloadAsync();
   } catch {}
 };
 
 const Home = () => {
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
 
   const soundObject = useRef(new Audio.Sound());
 
   const progressCallback = (downloadProgress: any) => {
-    console.log("downloadProgress", downloadProgress);
     const progress =
       downloadProgress.totalBytesWritten /
       downloadProgress.totalBytesExpectedToWrite;
@@ -97,8 +92,6 @@ const Home = () => {
     progressCallback,
   };
 
-  console.log("Progress", progress);
-
   const isLoading = (progress: number) => progress != 0 && progress != 1;
 
   console.log(isLoading(progress));
@@ -107,9 +100,6 @@ const Home = () => {
     <View style={styles.container}>
       {isLoading(progress) && <Progress.Bar progress={progress} width={null} />}
       <View style={{ flex: 1, flexDirection: "row" }}>
-        <MusicButton track={METAL} {...musicButtonProps}>
-          <Text style={styles.buttonText}>Metal</Text>
-        </MusicButton>
         <MusicButton track={RIVER_MASTER} {...musicButtonProps}>
           <Text style={styles.buttonText}>River Master</Text>
         </MusicButton>
@@ -124,7 +114,7 @@ const Home = () => {
         <MusicButton track={TEN_MINUTE_NEXUS} {...musicButtonProps}>
           <Text style={styles.buttonText}>10 Minute Nexus</Text>
         </MusicButton>
-        <DeleteButton />
+        {/* <DeleteButton /> */}
       </View>
     </View>
   );
