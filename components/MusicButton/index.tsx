@@ -11,9 +11,11 @@ interface MusicButtonProps {
     soundObject: Audio.Sound,
     track: any,
     playing: boolean,
-    setPlaying: React.Dispatch<React.SetStateAction<boolean>>
+    setPlaying: React.Dispatch<React.SetStateAction<boolean>>,
+    progressCallback: any
   ) => void;
   setPlaying: React.Dispatch<React.SetStateAction<boolean>>;
+  progressCallback: any;
 }
 
 const styles = StyleSheet.create({
@@ -37,13 +39,20 @@ const MusicButton = (props: MusicButtonProps) => {
     playing,
     playTrack,
     setPlaying,
+    progressCallback,
   } = props;
   return (
     <View style={styles.buttonView}>
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          playTrack(soundObject.current, track, playing, setPlaying);
+          playTrack(
+            soundObject.current,
+            track,
+            playing,
+            setPlaying,
+            progressCallback
+          );
         }}
       >
         {children}
