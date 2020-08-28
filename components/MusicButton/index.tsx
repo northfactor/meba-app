@@ -1,4 +1,3 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Audio } from "expo-av";
 import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
