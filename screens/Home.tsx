@@ -20,10 +20,10 @@ const styles = StyleSheet.create({
 });
 
 const METAL = "metal.mp3";
-const INSTRUCTIONS = "instructions.mp3";
 const RIVER_MASTER = "river-master.mp3";
+const FIFTEEN_MIN_BREATH = "15-min-breath-train.mp3";
 const SEVEN_MINUTE_RESET = "7-min-reset.mp3";
-const RIDE_THE_TIGER = "ride-the-tiger.mp3";
+const TEN_MINUTE_NEXUS = "10-min-nexus.mp3";
 
 const playTrack = async (
   soundObject: Audio.Sound,
@@ -59,7 +59,7 @@ const playTrack = async (
       try {
         await soundObject.loadAsync(dlTrack);
         await soundObject.playAsync();
-      } catch (error) { }
+      } catch (error) {}
     }
 
     return;
@@ -68,7 +68,7 @@ const playTrack = async (
   setPlaying(null);
   try {
     await soundObject.unloadAsync();
-  } catch { }
+  } catch {}
 };
 
 const Home = () => {
@@ -100,23 +100,23 @@ const Home = () => {
         <Progress.Bar progress={progress} width={null} color={mebaGreen} />
       )}
       <View style={{ flex: 1, flexDirection: "row" }}>
-        <MusicButton track={INSTRUCTIONS} {...musicButtonProps}>
-          <Text style={styles.buttonText}>Instructions</Text>
-        </MusicButton>
         <MusicButton track={RIVER_MASTER} {...musicButtonProps}>
           <Text style={styles.buttonText}>River Master</Text>
+        </MusicButton>
+        <MusicButton track={FIFTEEN_MIN_BREATH} {...musicButtonProps}>
+          <Text style={styles.buttonText}>15 Minute Breath Train</Text>
         </MusicButton>
       </View>
       <View style={{ flex: 1, flexDirection: "row" }}>
         <MusicButton track={SEVEN_MINUTE_RESET} {...musicButtonProps}>
-          <Text style={styles.buttonText}>7-Minute Reset</Text>
+          <Text style={styles.buttonText}>7 Minute Reset</Text>
         </MusicButton>
-        <MusicButton track={RIDE_THE_TIGER} {...musicButtonProps}>
-          <Text style={styles.buttonText}>Ride The Tiger</Text>
+        <MusicButton track={TEN_MINUTE_NEXUS} {...musicButtonProps}>
+          <Text style={styles.buttonText}>10 Minute Nexus</Text>
         </MusicButton>
         {/* The DeleteButton below is meant to be use for debugging. 
         It will delete any local meba files that were previously downloaded to your device. */}
-        {/* <DeleteButton /> */}
+        <DeleteButton />
       </View>
     </View>
   );
