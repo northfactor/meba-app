@@ -35,7 +35,7 @@ const playTrack = async (
   if (!playing) {
     setPlaying(track);
 
-    const reallocateUrl = "http://reallocate.org/wp-content/uploads/2020/08/";
+    const reallocateUrl = "http://reallocate.org/wp-content/uploads/";
 
     let dlTrack = null;
     const fileSystemTrack = FileSystem.documentDirectory + track;
@@ -59,7 +59,7 @@ const playTrack = async (
       try {
         await soundObject.loadAsync(dlTrack);
         await soundObject.playAsync();
-      } catch (error) { }
+      } catch (error) {}
     }
 
     return;
@@ -68,7 +68,7 @@ const playTrack = async (
   setPlaying(null);
   try {
     await soundObject.unloadAsync();
-  } catch { }
+  } catch {}
 };
 
 const Home = () => {
@@ -116,7 +116,7 @@ const Home = () => {
         </MusicButton>
         {/* The DeleteButton below is meant to be use for debugging. 
         It will delete any local meba files that were previously downloaded to your device. */}
-        {/* <DeleteButton /> */}
+        <DeleteButton />
       </View>
     </View>
   );
