@@ -1,6 +1,6 @@
 import { Audio } from "expo-av";
 import * as FileSystem from "expo-file-system";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import * as Progress from "react-native-progress";
 import MusicButton from "../components/MusicButton";
@@ -74,6 +74,12 @@ const playTrack = async (
 const Home = () => {
   const [playing, setPlaying] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    Audio.setAudioModeAsync({
+      staysActiveInBackground: true,
+    });
+  }, []);
 
   const soundObject = useRef(new Audio.Sound());
 
