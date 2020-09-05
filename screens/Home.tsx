@@ -59,7 +59,7 @@ const playTrack = async (
       try {
         await soundObject.loadAsync(dlTrack);
         await soundObject.playAsync();
-      } catch (error) {}
+      } catch (error) { }
     }
 
     return;
@@ -68,7 +68,7 @@ const playTrack = async (
   setPlaying(null);
   try {
     await soundObject.unloadAsync();
-  } catch {}
+  } catch { }
 };
 
 const Home = () => {
@@ -106,19 +106,16 @@ const Home = () => {
         <Progress.Bar progress={progress} width={null} color={mebaGreen} />
       )}
       <View style={{ flex: 1, flexDirection: "row" }}>
-        <MusicButton track={INSTRUCTIONS} {...musicButtonProps}>
-          <Text style={styles.buttonText}>Instructions</Text>
-        </MusicButton>
         <MusicButton track={RIVER_MASTER} {...musicButtonProps}>
-          <Text style={styles.buttonText}>River Master</Text>
+          <Text style={styles.buttonText}>DE-STRESS</Text>
         </MusicButton>
       </View>
       <View style={{ flex: 1, flexDirection: "row" }}>
         <MusicButton track={SEVEN_MINUTE_RESET} {...musicButtonProps}>
-          <Text style={styles.buttonText}>7-Minute Reset</Text>
+          <Text style={styles.buttonText}>RESET</Text>
         </MusicButton>
         <MusicButton track={RIDE_THE_TIGER} {...musicButtonProps}>
-          <Text style={styles.buttonText}>Ride The Tiger</Text>
+          <Text style={styles.buttonText}>FLOW</Text>
         </MusicButton>
         {/* The DeleteButton below is meant to be use for debugging. 
         It will delete any local meba files that were previously downloaded to your device. */}
