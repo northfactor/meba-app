@@ -35,7 +35,7 @@ const DeleteButton = () => (
         });
       }}
     >
-      <Text style={styles.buttonText}>Delete Files</Text>
+      <Text style={styles.buttonText}>SYNC</Text>
     </TouchableOpacity>
   </View>
 );
