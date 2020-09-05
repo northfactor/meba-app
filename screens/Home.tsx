@@ -109,13 +109,13 @@ const Home = () => {
         <MusicButton track={RIVER_MASTER} {...musicButtonProps}>
           <Text style={styles.buttonText}>DE-STRESS</Text>
         </MusicButton>
+        <MusicButton track={RIDE_THE_TIGER} {...musicButtonProps}>
+          <Text style={styles.buttonText}>FLOW</Text>
+        </MusicButton>
       </View>
       <View style={{ flex: 1, flexDirection: "row" }}>
         <MusicButton track={SEVEN_MINUTE_RESET} {...musicButtonProps}>
           <Text style={styles.buttonText}>RESET</Text>
-        </MusicButton>
-        <MusicButton track={RIDE_THE_TIGER} {...musicButtonProps}>
-          <Text style={styles.buttonText}>FLOW</Text>
         </MusicButton>
         {/* The DeleteButton below is meant to be use for debugging. 
         It will delete any local meba files that were previously downloaded to your device. */}
