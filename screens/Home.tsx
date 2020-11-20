@@ -24,6 +24,8 @@ const INSTRUCTIONS = "instructions.mp3";
 const RIVER_MASTER = "river-master.mp3";
 const BEACH_DAY = "beach-day.mp3";
 const RIDE_THE_TIGER = "ride-the-tiger.mp3";
+const FLOW_BREATH = "flow-breath.mp3";
+const WIM_HOF_BREATH = "wim-hof.mp3";
 
 const playTrack = async (
   soundObject: Audio.Sound,
@@ -107,15 +109,21 @@ const Home = () => {
       )}
       <View style={{ flex: 1, flexDirection: "row" }}>
         <MusicButton track={BEACH_DAY} {...musicButtonProps}>
-          <Text style={styles.buttonText}>RELAX</Text>
+          <Text style={styles.buttonText}>Day At The Beach</Text>
         </MusicButton>
         <MusicButton track={RIVER_MASTER} {...musicButtonProps}>
-          <Text style={styles.buttonText}>DE-STRESS</Text>
+          <Text style={styles.buttonText}>River Master</Text>
+        </MusicButton>
+        <MusicButton track={RIDE_THE_TIGER} {...musicButtonProps}>
+          <Text style={styles.buttonText}>Ride The Tiger</Text>
         </MusicButton>
       </View>
       <View style={{ flex: 1, flexDirection: "row" }}>
-        <MusicButton track={RIDE_THE_TIGER} {...musicButtonProps}>
-          <Text style={styles.buttonText}>FLOW</Text>
+        <MusicButton track={FLOW_BREATH} {...musicButtonProps}>
+          <Text style={styles.buttonText}>Flow Breath</Text>
+        </MusicButton>
+        <MusicButton track={WIM_HOF_BREATH} {...musicButtonProps}>
+          <Text style={styles.buttonText}>Wim Hof</Text>
         </MusicButton>
         {/* The DeleteButton below is meant to be use for debugging. 
         It will delete any local meba files that were previously downloaded to your device. */}
