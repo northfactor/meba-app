@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { PanResponder } from 'react-native';
 import Svg, { Circle, G, Path, Text as SvgText } from 'react-native-svg';
+import useLayout from '../../hooks/useLayout';
 
 interface ValueRange {
     min: number;
@@ -35,15 +36,18 @@ const VerticalSlider = (props: VerticalSliderProps) => {
     const textCircleRadius = 20;
 
     const staticPathStart = { x: width / 2, y: textCircleRadius };
-    const staticPathEnd = { x: width / 2, y: height - textCircleRadius };
+    const staticPathEnd = { x: width / 2, y: height - textCircleRadius - 10 };
     const startCoord = { x: width / 2, y: textCircleRadius };
     const endCoord = { x: width / 2, y: value };
 
     // Using textCircleRadius to adjust the slider height and fit the circle icon on the screen
     const valueRange = { min: textCircleRadius, max: height - textCircleRadius * 2 };
 
+    const [size, onLayout] = useLayout();
+
     const handlePanResponderMove = ({ nativeEvent: { locationY } }: any) => {
         const { min, max } = valueRange;
+        console.log('locationY', locationY);
         if (locationY < min || locationY > max) {
             return;
         }
@@ -54,11 +58,27 @@ const VerticalSlider = (props: VerticalSliderProps) => {
     const _panResponder = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
         onMoveShouldSetPanResponder: () => true,
-        onPanResponderMove: handlePanResponderMove
+        onPanResponderMove: handlePanResponderMove,
+        onPanResponderRelease: (evt, gestureState) => {
+            // The user has released all touches while this view is the
+            // responder. This typically means a gesture has succeeded
+            console.log('Release', gestureState);
+        },
+        onPanResponderTerminate: (evt, gestureState) => {
+            // Another component has become the responder, so this gesture
+            // should be cancelled
+            console.log('Terminate', gestureState);
+        }
     });
 
     return (
-        <Svg width={width} height={height} preserveAspectRatio="xMaxYMin meet" {..._panResponder.panHandlers}>
+        <Svg
+            onLayout={onLayout}
+            width={width}
+            height={height}
+            preserveAspectRatio="xMaxYMin meet"
+            {..._panResponder.panHandlers}
+        >
             <Path
                 stroke={meterColor}
                 strokeWidth={10}
