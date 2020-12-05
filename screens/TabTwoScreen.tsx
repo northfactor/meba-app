@@ -1,34 +1,32 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Text, View } from '../components/Themed';
+import CircularSlider from '../components/CircularSlider';
+import VerticalSlider from '../components/VerticalSlider';
 
 export default function TabTwoScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <View>
-        <Text>
-          Foo
-        </Text>
-      </View>
-    </View>
-  );
+    const [circleState, setCircleState] = useState(0);
+    return (
+        <View style={styles.container}>
+            <CircularSlider
+                width={200}
+                height={200}
+                meterColor="#0cd"
+                textColor="#fff"
+                value={circleState}
+                onValueChange={setCircleState}
+            />
+            <VerticalSlider maxValue={100} height={200} meterColor="#0cd" textColor="#fff" />
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
+    container: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'green'
+    }
 });
