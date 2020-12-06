@@ -48,10 +48,11 @@ export const getDisplayValue = (maxValue: number, value: number, valueRange: Val
 const VerticalSlider = (props: VerticalSliderProps) => {
     const { height, maxValue, meterColor, onValueChange, textColor } = props;
 
-    const width = 50;
     const textCircleRadius = 20;
+    const width = textCircleRadius * 2;
     const valueRange = getValueRange(textCircleRadius, height);
-    const [value, setValue] = useState(0);
+    // Range values are inverted for svg rendering. Max outputs 0.
+    const [value, setValue] = useState(valueRange.max);
 
     const staticPathStart = { x: width / 2, y: textCircleRadius };
     const staticPathEnd = { x: width / 2, y: valueRange.max };
@@ -60,7 +61,6 @@ const VerticalSlider = (props: VerticalSliderProps) => {
 
     const handlePanResponderMove = ({ nativeEvent: { locationY } }: any) => {
         const { min, max } = valueRange;
-        console.log('locationY', locationY);
         if (locationY < min - 1 || locationY > max) {
             return;
         }
@@ -68,7 +68,6 @@ const VerticalSlider = (props: VerticalSliderProps) => {
         setValue(roundedLocation);
 
         const actualValue = 1 - (roundedLocation - min) / (max - min);
-        console.log('actualValue', actualValue);
         onValueChange(actualValue);
     };
 
@@ -76,16 +75,6 @@ const VerticalSlider = (props: VerticalSliderProps) => {
         onStartShouldSetPanResponder: () => true,
         onMoveShouldSetPanResponder: () => true,
         onPanResponderMove: handlePanResponderMove
-        // onPanResponderRelease: (evt, gestureState) => {
-        //     // The user has released all touches while this view is the
-        //     // responder. This typically means a gesture has succeeded
-        //     console.log('Release', gestureState);
-        // },
-        // onPanResponderTerminate: (evt, gestureState) => {
-        //     // Another component has become the responder, so this gesture
-        //     // should be cancelled
-        //     console.log('Terminate', gestureState);
-        // }
     });
 
     return (
