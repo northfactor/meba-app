@@ -6,6 +6,10 @@ import VerticalSlider from '../components/VerticalSlider';
 
 export default function TabTwoScreen() {
     const [circleState, setCircleState] = useState(0);
+    const [volumeState, setVolumeState] = useState(0);
+    const [constrastState, setContrastState] = useState(0);
+
+    console.log('volumeState', volumeState);
     return (
         <View style={styles.container}>
             <CircularSlider
@@ -16,7 +20,20 @@ export default function TabTwoScreen() {
                 value={circleState}
                 onValueChange={setCircleState}
             />
-            <VerticalSlider maxValue={100} height={200} meterColor="#0cd" textColor="#fff" />
+            <VerticalSlider
+                maxValue={100}
+                height={250}
+                meterColor="#0cd"
+                textColor="#fff"
+                onValueChange={setVolumeState}
+            />
+            <VerticalSlider
+                maxValue={100}
+                height={250}
+                meterColor="#0cd"
+                textColor="#fff"
+                onValueChange={setContrastState}
+            />
         </View>
     );
 }
