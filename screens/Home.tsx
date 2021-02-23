@@ -25,7 +25,7 @@ const RIVER_MASTER = "river-master.mp3";
 const BEACH_DAY = "beach-day.mp3";
 const RIDE_THE_TIGER = "ride-the-tiger.mp3";
 const FLOW_BREATH = "flow-breath.mp3";
-const WIM_HOF_BREATH = "wim-hof.mp3";
+const DEEP_DIVE = "deep-dive.mp3";
 
 const playTrack = async (
   soundObject: Audio.Sound,
@@ -119,11 +119,11 @@ const Home = () => {
         </MusicButton>
       </View>
       <View style={{ flex: 1, flexDirection: "row" }}>
+        <MusicButton track={DEEP_DIVE} {...musicButtonProps}>
+          <Text style={styles.buttonText}>Deep Dive</Text>
+        </MusicButton>
         <MusicButton track={FLOW_BREATH} {...musicButtonProps}>
           <Text style={styles.buttonText}>Flow Breath</Text>
-        </MusicButton>
-        <MusicButton track={WIM_HOF_BREATH} {...musicButtonProps}>
-          <Text style={styles.buttonText}>Wim Hof</Text>
         </MusicButton>
         {/* The DeleteButton below is meant to be use for debugging. 
         It will delete any local meba files that were previously downloaded to your device. */}
