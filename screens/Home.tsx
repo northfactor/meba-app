@@ -25,7 +25,7 @@ const RIVER_MASTER = "river-master.mp3";
 const BEACH_DAY = "beach-day.mp3";
 const RIDE_THE_TIGER = "ride-the-tiger.mp3";
 const FLOW_BREATH = "flow-breath.mp3";
-const DEEP_DIVE = "deep-dive.mp3";
+const IN_FROM_THE_COLD = "in-from-cold.mp3";
 
 const playTrack = async (
   soundObject: Audio.Sound,
@@ -119,8 +119,8 @@ const Home = () => {
         </MusicButton>
       </View>
       <View style={{ flex: 1, flexDirection: "row" }}>
-        <MusicButton track={DEEP_DIVE} {...musicButtonProps}>
-          <Text style={styles.buttonText}>Deep Dive</Text>
+        <MusicButton track={IN_FROM_THE_COLD} {...musicButtonProps}>
+          <Text style={styles.buttonText}>In From The Cold</Text>
         </MusicButton>
         <MusicButton track={FLOW_BREATH} {...musicButtonProps}>
           <Text style={styles.buttonText}>Flow Breath</Text>
